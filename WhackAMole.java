@@ -1,13 +1,18 @@
 import java.util.*;
 
 public class WhackAMole {
-    // instance variables
+    // Instance Variables
     int score = 0;
     int molesLeft;
     int attemptsLeft;
     char[][] moleGrid;
    
-    // constructor WhackAMole(int numAttempts, int gridDimension)
+    /**
+     * Constructor that takes a number of attempts and dimensions for grid
+     * 
+     * @param numAttempts - the max number of attempts user gets to whack a mole
+     * @param gridDimension - length of the side of a square grid
+     */
     WhackAMole(int numAttempts, int gridDimension) {
 	attemptsLeft = numAttempts;
 	moleGrid = new char[gridDimension][gridDimension];
@@ -17,7 +22,14 @@ public class WhackAMole {
 	    }
 	}
     }
-    // methods
+    /**
+     * Method to place a mole in the grid given x, y coordinates
+     * 
+     * @param x - x coordinate
+     * @param y - y coordinate
+     * @return - true if the mole was placed, false if the space was occupied and therefore could not place the mole
+     */
+    
     boolean place(int x, int y) {
 	if (moleGrid[x][y] == '*') {
 	    moleGrid[x][y] = 'M';
@@ -27,18 +39,29 @@ public class WhackAMole {
 	    return false;
 	}
     }
-    
+    /**
+     * Method to whack a mole given coordinates x, y
+     * Performs the necessary updates to all variables based on a successful whack or a miss
+     * 
+     * @param x - x coordinate of intended whack
+     * @param y - y coordinate of intended whack
+     */
     void whack(int x, int y) {
 	if (moleGrid[x][y] == 'M') {
 	    score += 1;
 	    attemptsLeft -= 1;
 	    molesLeft -= 1;
 	    moleGrid[x][y] = 'W';
+	    System.out.println("YOU WHACKED A MOLE");
 	} else {
 	    attemptsLeft -= 1;
+	    System.out.println("SWING AND A MISS");
 	}
     }
-    
+    /**
+     * Method to print the grid to the user
+     * Displays "W" for a whacked mole and "*" for anything else
+     */
     void printGridToUser() {
 	char[][] userGrid = moleGrid;
 	for (int i = 0; i < userGrid.length; i++) {
@@ -50,14 +73,19 @@ public class WhackAMole {
 	}
 	System.out.println(Arrays.deepToString(userGrid));
     }
-    
+    /**
+     * Method to print the grid out exactly as is
+     * Displays "W" for a whacked mole, "M" for an unwhacked mole, "*" for all else
+     */
     void printGrid() {
 	System.out.println(Arrays.deepToString(moleGrid));
     }
-    // main method
+    
+    // Main Method
     public static void main(String[] args) {
+	// Create a new game with 50 attempts on a 10x10 space
 	WhackAMole myWhack = new WhackAMole(50, 10);
-	// Hard code for placing the 10 moles
+	// Randomly place 10 moles on the space
 	int molesToPlace = 10;
 	while (molesToPlace > 0) {
 	    int randX = (int) (Math.random() * 9);
@@ -65,17 +93,15 @@ public class WhackAMole {
 	    if (myWhack.place(randX, randY)) molesToPlace--;
 	}
 	
-	    
-	
-	
 	// Create a scanner, give rules and get user info
 	Scanner scanner = new Scanner(System.in);
 	System.out.println("You have 50 whacks to get all 10 moles, enter -1,-1 to give up");
 	System.out.println("Game ends when you whack all the moles or run out of attempts");
 	
-	// while loop to play the game
+	// While loop to play the game while the user still has attempts left
 	while (myWhack.attemptsLeft > 0) {
 	    System.out.println("Whacks remaining: " + myWhack.attemptsLeft);
+	    System.out.println("Moles remaining: " + myWhack.molesLeft);
 	    System.out.println("Enter coordinates in x,y syntax:");
 		
 	    // Read in string of coordinates and split
