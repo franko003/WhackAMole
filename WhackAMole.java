@@ -78,7 +78,12 @@ public class WhackAMole {
      * Displays "W" for a whacked mole, "M" for an unwhacked mole, "*" for all else
      */
     void printGrid() {
-	System.out.println(Arrays.deepToString(moleGrid));
+	for (int i = 0; i < moleGrid.length; i++) {
+	    for (int j = 0; j < moleGrid.length; j++) {
+		System.out.print(moleGrid[i][j] + " ");
+	    }
+	    System.out.println();
+	}
     }
     
     // Main Method
