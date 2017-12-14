@@ -47,16 +47,22 @@ public class WhackAMole {
      * @param y - y coordinate of intended whack
      */
     void whack(int x, int y) {
-	if (moleGrid[x][y] == 'M') {
-	    score += 1;
-	    attemptsLeft -= 1;
-	    molesLeft -= 1;
-	    moleGrid[x][y] = 'W';
-	    System.out.println("YOU WHACKED A MOLE");
+	if (x >= 0 && x <= 9 && y >= 0 && y <= 9) {
+	    if (moleGrid[x][y] == 'M') {
+		    score += 1;
+		    attemptsLeft -= 1;
+		    molesLeft -= 1;
+		    moleGrid[x][y] = 'W';
+		    System.out.println("YOU WHACKED A MOLE");
+		} else {
+		    attemptsLeft -= 1;
+		    System.out.println("SWING AND A MISS");
+		}
 	} else {
 	    attemptsLeft -= 1;
-	    System.out.println("SWING AND A MISS");
+	    System.out.println("SWUNG OUTSIDE OF THE GRID AND DEFINITELY MISSED");
 	}
+	
     }
     /**
      * Method to print the grid to the user
@@ -107,35 +113,46 @@ public class WhackAMole {
 	while (myWhack.attemptsLeft > 0) {
 	    System.out.println("Whacks remaining: " + myWhack.attemptsLeft);
 	    System.out.println("Moles remaining: " + myWhack.molesLeft);
-	    System.out.println("Enter coordinates in x,y syntax:");
+	    System.out.println("Enter coordinates in x,y format, with x and y between 0-9:");
 		
 	    // Read in string of coordinates and split
 	    String userCoords = scanner.next();
-	    String[] parts = userCoords.split(",");
-	    String xCoord = parts[0];
-	    String yCoord = parts[1];
-		
-	    // Convert to strings to integers
-	    int x = Integer.parseInt(xCoord);
-	    int y = Integer.parseInt(yCoord);
+	    String[] parts = new String[2];
+	    String xCoord = "";
+	    String yCoord = "";
 	    
-	    if (x == -1 && y == -1) {
-		System.out.println("You Quit");
-		myWhack.printGrid();
-		break;
-	    } else {
-		myWhack.whack(x, y);
-		if (myWhack.molesLeft == 0) {
-		    System.out.println("You Win");
+	    try {
+		parts = userCoords.split(",");
+		xCoord = parts[0];
+		yCoord = parts[1];
+
+		// Convert to strings to integers
+		int x = Integer.parseInt(xCoord);
+		int y = Integer.parseInt(yCoord);
+
+		if (x == -1 && y == -1) {
+		    System.out.println("YOU QUIT");
+		    myWhack.printGrid();
 		    break;
+		} else {
+		    myWhack.whack(x, y);
+		    if (myWhack.molesLeft == 0) {
+			System.out.println("YOU WIN");
+			break;
+		    }
+
 		}
-		
+	    } catch (Exception e) {
+		System.out.println("Incorrect input syntax.  Please use x,y format with x and y between 0-9");
 	    }
-	    
+
 	}
 	
+	if (myWhack.attemptsLeft == 0) System.out.println("YOU LOSE");
+	System.out.println("GAME OVER");
+
 	scanner.close();
-	
+
     }
     
 }
